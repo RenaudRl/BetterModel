@@ -26,6 +26,8 @@ import java.util.Base64;
  * @param height the height of the texture in pixels
  * @param uvWidth the UV width of the texture
  * @param uvHeight the UV height of the texture
+ * @param frameTime the frame time of the texture
+ * @param frameInterpolate the interpolation flag of the texture
  * @since 1.15.2
  */
 @ApiStatus.Internal
@@ -35,7 +37,9 @@ public record ModelTexture(
     int width,
     int height,
     @SerializedName("uv_width") int uvWidth,
-    @SerializedName("uv_height") int uvHeight
+    @SerializedName("uv_height") int uvHeight,
+    @SerializedName("frame_time") int frameTime,
+    @SerializedName("frame_interpolate") boolean frameInterpolate
 ) {
 
     /**
@@ -57,7 +61,9 @@ public record ModelTexture(
             height(),
             uvWidth(),
             uvHeight(),
-            !name.startsWith("-")
+            !name.startsWith("-"),
+            frameTime(),
+            frameInterpolate()
         );
     }
 

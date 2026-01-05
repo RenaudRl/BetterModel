@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
  * @param uvWidth the UV width of the texture, if specified
  * @param uvHeight the UV height of the texture, if specified
  * @param canBeRendered whether this texture should be included in the resource pack
+ * @param frameTime the frame time of the texture
+ * @param frameInterpolate the interpolation flag of the texture
  * @since 1.15.2
  */
 public record BlueprintTexture(
@@ -35,7 +37,9 @@ public record BlueprintTexture(
     int height,
     int uvWidth,
     int uvHeight,
-    boolean canBeRendered
+    boolean canBeRendered,
+    int frameTime,
+    boolean frameInterpolate
 ) {
     /**
      * Checks if this texture is an animated texture (a texture atlas for animation).
@@ -62,8 +66,8 @@ public record BlueprintTexture(
     public @NotNull JsonObject toMcmeta() {
         return JsonObjectBuilder.builder()
             .jsonObject("animation", animation -> {
-                animation.property("interpolate", true);
-                animation.property("frametime", BetterModel.config().animatedTextureFrameTime());
+                animation.property("interpolate", frameInterpolate());
+                animation.property("frametime", frameTime());
             })
             .build();
     }

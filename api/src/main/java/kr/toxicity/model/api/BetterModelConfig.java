@@ -110,12 +110,6 @@ public interface BetterModelConfig {
     boolean followMobInvisibility();
 
     /**
-     * Gets animation time in texture mcmeta
-     * @return animation time
-     */
-    int animatedTextureFrameTime();
-
-    /**
      * Checks use Purpur afk.
      * @return use Purpur afk
      */
