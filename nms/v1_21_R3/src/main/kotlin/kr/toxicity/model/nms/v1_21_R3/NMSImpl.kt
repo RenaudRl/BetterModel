@@ -14,7 +14,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelPromise
 import kr.toxicity.model.api.BetterModel
 import kr.toxicity.model.api.bone.RenderedBone
-import kr.toxicity.model.api.data.blueprint.NamedBoundingBox
+import kr.toxicity.model.api.data.blueprint.ModelBoundingBox
 import kr.toxicity.model.api.entity.BaseBukkitEntity
 import kr.toxicity.model.api.entity.BaseBukkitPlayer
 import kr.toxicity.model.api.entity.BaseEntity
@@ -341,12 +341,10 @@ class NMSImpl : NMS {
         }.asBukkit()
     }
 
-    override fun createHitBox(entity: BaseEntity, bone: RenderedBone, namedBoundingBox: NamedBoundingBox, mountController: MountController, listener: HitBoxListener): HitBox? {
+    override fun createHitBox(entity: BaseEntity, bone: RenderedBone, boundingBox: ModelBoundingBox, mountController: MountController, listener: HitBoxListener): HitBox? {
         val handle = entity.handle() as? Entity ?: return null
-        val newBox = namedBoundingBox.center()
         return HitBoxImpl(
-            namedBoundingBox.name,
-            newBox,
+            boundingBox.center(),
             bone,
             listener,
             handle,

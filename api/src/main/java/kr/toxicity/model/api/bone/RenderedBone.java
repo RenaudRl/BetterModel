@@ -203,7 +203,7 @@ public final class RenderedBone implements BoneEventHandler {
             synchronized (this) {
                 if (previous != hitBox) return false;
                 var h = group.getHitBox();
-                if (h == null) h = ModelBoundingBox.MIN.named(name());
+                if (h == null) h = ModelBoundingBox.MIN;
                 var l = eventDispatcher.onCreateHitBox(this, (listener != null ? listener : HitBoxListener.EMPTY).toBuilder()).build();
                 if (hitBox != null) hitBox.removeHitBox();
                 hitBox = BetterModel.nms().createHitBox(entity, this, h, group.getMountController(), l);

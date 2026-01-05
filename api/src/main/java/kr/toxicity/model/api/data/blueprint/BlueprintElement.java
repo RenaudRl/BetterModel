@@ -221,7 +221,7 @@ public sealed interface BlueprintElement {
          * @return the named bounding box, or null if no cubes are present
          * @since 1.15.2
          */
-        public @Nullable NamedBoundingBox hitBox() {
+        public @Nullable ModelBoundingBox hitBox() {
             return filterIsInstance(children, Cube.class).map(element -> {
                     var from = element.from()
                         .minus(origin)
@@ -238,7 +238,6 @@ public sealed interface BlueprintElement {
                         to.z()
                     ).invert();
                 }).max(Comparator.comparingDouble(ModelBoundingBox::length))
-                .map(max -> new NamedBoundingBox(name, max))
                 .orElse(null);
         }
     }

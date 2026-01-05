@@ -96,7 +96,7 @@ public class EntityTracker extends Tracker {
                 var shadow = BetterModel.nms().create(entity.location(), d -> {
                     if (entity instanceof BasePlayer) d.moveDuration(1);
                 });
-                var baseScale = (float) (box.box().x() + box.box().z()) / 4F;
+                var baseScale = (float) (box.x() + box.z()) / 4F;
                 tick(((t, s) -> {
                     var wPos = bone.hitBoxPosition();
                     shadow.shadowRadius(scale.getAsFloat() * baseScale);

@@ -77,7 +77,9 @@ public interface HitBox extends Identifiable {
      * @return the group name
      * @since 1.15.2
      */
-    @NotNull BoneName groupName();
+    default @NotNull BoneName groupName() {
+        return positionSource().name();
+    }
 
     /**
      * Returns the mount controller for this hitbox.

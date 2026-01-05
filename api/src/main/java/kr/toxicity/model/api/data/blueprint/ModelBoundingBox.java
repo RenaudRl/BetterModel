@@ -6,10 +6,10 @@
  */
 package kr.toxicity.model.api.data.blueprint;
 
-import kr.toxicity.model.api.bone.BoneName;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 /**
  * Represents an axis-aligned bounding box (AABB) for a model part.
@@ -112,17 +112,6 @@ public record ModelBoundingBox(
     }
 
     /**
-     * Associates this bounding box with a bone name.
-     *
-     * @param name the bone name
-     * @return a {@link NamedBoundingBox} wrapping this box
-     * @since 1.15.2
-     */
-    public @NotNull NamedBoundingBox named(@NotNull BoneName name) {
-        return new NamedBoundingBox(name, this);
-    }
-
-    /**
      * Returns the width of the bounding box (X-axis extent).
      *
      * @return the width
@@ -168,12 +157,12 @@ public record ModelBoundingBox(
      * @return the center vector
      * @since 1.15.2
      */
-    public @NotNull Vector3d centerPoint() {
-        return new Vector3d(
-            minX + maxX,
-            minY + maxY,
-            minZ + maxZ
-        ).div(2D);
+    public @NotNull Vector3f centerPoint() {
+        return new Vector3f(
+            (float) (minX + maxX),
+            (float) (minY + maxY),
+            (float) (minZ + maxZ)
+        ).div(2F);
     }
 
     /**

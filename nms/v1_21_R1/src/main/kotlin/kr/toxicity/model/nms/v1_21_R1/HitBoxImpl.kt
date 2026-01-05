@@ -7,7 +7,6 @@
 package kr.toxicity.model.nms.v1_21_R1
 
 import kr.toxicity.model.api.BetterModel
-import kr.toxicity.model.api.bone.BoneName
 import kr.toxicity.model.api.bone.RenderedBone
 import kr.toxicity.model.api.config.DebugConfig
 import kr.toxicity.model.api.data.blueprint.ModelBoundingBox
@@ -18,7 +17,6 @@ import kr.toxicity.model.api.mount.MountController
 import kr.toxicity.model.api.nms.HitBox
 import kr.toxicity.model.api.nms.HitBoxListener
 import kr.toxicity.model.api.nms.ModelInteractionHand
-import kr.toxicity.model.api.util.FunctionUtil
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ServerboundInteractPacket
 import net.minecraft.server.level.ServerPlayer
@@ -46,13 +44,10 @@ import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.util.Vector
-import org.joml.Quaterniond
 import org.joml.Vector3f
 import java.util.*
-import java.util.function.Supplier
 
 internal class HitBoxImpl(
-    private val name: BoneName,
     private val source: ModelBoundingBox,
     private val bone: RenderedBone,
     private val listener: HitBoxListener,
@@ -70,11 +65,7 @@ internal class HitBoxImpl(
     val craftEntity: HitBox by lazy {
         object : CraftArmorStand(Bukkit.getServer() as CraftServer, this), HitBox by this {}
     }
-    private val _rotatedSource = FunctionUtil.throttleTick(Supplier {
-        source.rotate(Quaterniond(bone.hitBoxViewRotation()))
-    })
-    private val rotatedSource get() = _rotatedSource.get()
-    val dimensions: EntityDimensions get() = rotatedSource.run {
+    val dimensions: EntityDimensions get() = source.run {
         EntityDimensions(
             (x() + z()).toFloat() / 2,
             y().toFloat(),
@@ -109,7 +100,6 @@ internal class HitBoxImpl(
         }
     }
 
-    override fun groupName(): BoneName = name
     override fun id(): Int = id
     override fun uuid(): UUID = uuid
     override fun source(): org.bukkit.entity.Entity = delegate.bukkitEntity
@@ -278,7 +268,7 @@ internal class HitBoxImpl(
         yHeadRot = yRot
         yBodyRot = yRot
         val pos = relativePosition()
-        val minusHeight = rotatedSource.minY * bone.hitBoxScale()
+        val minusHeight = source.minY * bone.hitBoxScale()
         setPos(
             pos.x.toDouble(),
             pos.y.toDouble() + minusHeight,
@@ -408,7 +398,6 @@ internal class HitBoxImpl(
         } else {
             val vec3 = position()
             val scale = bone.hitBoxScale()
-            val source = rotatedSource
             AABB(
                 vec3.x + source.minX * scale,
                 vec3.y,

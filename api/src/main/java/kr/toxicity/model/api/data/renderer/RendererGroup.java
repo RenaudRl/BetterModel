@@ -9,7 +9,7 @@ package kr.toxicity.model.api.data.renderer;
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bone.*;
 import kr.toxicity.model.api.data.blueprint.BlueprintElement;
-import kr.toxicity.model.api.data.blueprint.NamedBoundingBox;
+import kr.toxicity.model.api.data.blueprint.ModelBoundingBox;
 import kr.toxicity.model.api.mount.MountController;
 import kr.toxicity.model.api.mount.MountControllers;
 import kr.toxicity.model.api.util.MathUtil;
@@ -46,7 +46,7 @@ public final class RendererGroup {
     @Unmodifiable
     private final Map<BoneName, RendererGroup> children;
     @Getter
-    private final @Nullable NamedBoundingBox hitBox;
+    private final @Nullable ModelBoundingBox hitBox;
 
     @Getter
     private final @NotNull BoneItemMapper itemMapper;
@@ -67,7 +67,7 @@ public final class RendererGroup {
         @Nullable ItemStack itemStack,
         @NotNull BlueprintElement.Bone group,
         @NotNull Map<BoneName, RendererGroup> children,
-        @Nullable NamedBoundingBox box
+        @Nullable ModelBoundingBox box
     ) {
         this.parent = group;
         this.children = children;

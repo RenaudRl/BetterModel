@@ -8,7 +8,7 @@ package kr.toxicity.model.api.nms;
 
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bone.RenderedBone;
-import kr.toxicity.model.api.data.blueprint.NamedBoundingBox;
+import kr.toxicity.model.api.data.blueprint.ModelBoundingBox;
 import kr.toxicity.model.api.entity.BaseBukkitEntity;
 import kr.toxicity.model.api.entity.BaseBukkitPlayer;
 import kr.toxicity.model.api.entity.BaseEntity;
@@ -184,13 +184,13 @@ public interface NMS {
      *
      * @param entity the target entity
      * @param bone the bone associated with the hitbox
-     * @param namedBoundingBox the bounding box definition
+     * @param boundingBox the bounding box definition
      * @param controller the mount controller
      * @param listener the hitbox listener
      * @return the created hitbox, or null if creation failed
      * @since 1.15.2
      */
-    @Nullable HitBox createHitBox(@NotNull BaseEntity entity, @NotNull RenderedBone bone, @NotNull NamedBoundingBox namedBoundingBox, @NotNull MountController controller, @NotNull HitBoxListener listener);
+    @Nullable HitBox createHitBox(@NotNull BaseEntity entity, @NotNull RenderedBone bone, @NotNull ModelBoundingBox boundingBox, @NotNull MountController controller, @NotNull HitBoxListener listener);
 
     /**
      * Returns the NMS version of the server.
