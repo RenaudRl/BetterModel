@@ -17,8 +17,8 @@
 ![](https://github.com/user-attachments/assets/5a6c1a8c-6fe2-4a67-a10e-e63e40825d35)
 ![](https://github.com/user-attachments/assets/ff515577-6a72-48ba-9943-81f00dddb375)
 
-<sub>(In BlockBench / In Minecraft)</sub>
 * * *
+<sub>(In BlockBench / In Minecraft)</sub>
 
 # ✨ Introduction
 
@@ -93,7 +93,7 @@ BetterModel aims to be a reliable engine that provides stable, high-quality anim
 
 [![](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/maven-central_vector.svg)](https://central.sonatype.com/artifact/io.github.toxicity188/bettermodel)
 
-> [!INFO]\
+> [!NOTE]\
 > For more detailed API specifications, please refer to our [GitHub Wiki](https://github.com/toxicity188/BetterModel/wiki/API-example).
 
 <details open>

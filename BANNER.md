@@ -15,8 +15,8 @@
 ![](https://github.com/user-attachments/assets/5a6c1a8c-6fe2-4a67-a10e-e63e40825d35)
 ![](https://github.com/user-attachments/assets/ff515577-6a72-48ba-9943-81f00dddb375)
 
-<sub>(In BlockBench / In Minecraft)</sub>
 * * *
+<sub>(In BlockBench / In Minecraft)</sub>
 
 # ✨ What is BetterModel?
 
