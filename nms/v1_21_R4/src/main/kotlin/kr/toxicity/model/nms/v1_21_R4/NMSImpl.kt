@@ -383,9 +383,9 @@ class NMSImpl : NMS {
         }))
     }.asBukkit()
 
-    override fun createSkinItem(model: String, flags: List<Boolean>, strings: List<String>, colors: List<Int>): TransformedItemStack {
+    override fun createSkinItem(model: String, floats: List<Float>, flags: List<Boolean>, strings: List<String>, colors: List<Int>): TransformedItemStack {
         return VanillaItemStack(Items.PLAYER_HEAD).run {
-            set(DataComponents.CUSTOM_MODEL_DATA, CustomModelData(emptyList(), flags, strings, colors))
+            set(DataComponents.CUSTOM_MODEL_DATA, CustomModelData(floats, flags, strings, colors))
             set(DataComponents.ITEM_MODEL, ResourceLocation.parse(model))
             TransformedItemStack.of(asBukkit())
         }

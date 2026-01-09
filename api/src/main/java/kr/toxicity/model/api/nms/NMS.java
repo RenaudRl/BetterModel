@@ -240,13 +240,14 @@ public interface NMS {
      * Creates a custom skin item stack.
      *
      * @param model the model name
+     * @param floats a list of floats
      * @param flags a list of flags
      * @param strings a list of strings
      * @param colors a list of colors
      * @return the transformed item stack
      * @since 1.15.2
      */
-    default @NotNull TransformedItemStack createSkinItem(@NotNull String model, @NotNull List<Boolean> flags, @NotNull List<String> strings, @NotNull List<Integer> colors) {
+    default @NotNull TransformedItemStack createSkinItem(@NotNull String model, @NotNull List<Float> floats, @NotNull List<Boolean> flags, @NotNull List<String> strings, @NotNull List<Integer> colors) {
         return TransformedItemStack.empty();
     }
 
