@@ -50,10 +50,15 @@ public final class BetterModel {
      */
     public static final boolean IS_PURPUR = classExists("org.purpurmc.purpur.PurpurConfig");
     /**
+     * Checks if the server is running on the BTC Core platform.
+     * @since 1.15.2
+     */
+    public static final boolean IS_BTC_CORE = classExists("com.infernalsuite.asp.config.BTCCoreConfig");
+    /**
      * Checks if the server is running on the Paper platform (or a fork like Purpur/Folia).
      * @since 1.15.2
      */
-    public static final boolean IS_PAPER = IS_PURPUR || IS_FOLIA || classExists("io.papermc.paper.configuration.PaperConfigurations");
+    public static final boolean IS_PAPER = IS_PURPUR || IS_FOLIA || IS_BTC_CORE || classExists("io.papermc.paper.configuration.PaperConfigurations");
 
     /**
      * The singleton plugin instance.

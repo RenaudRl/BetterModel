@@ -83,6 +83,7 @@ abstract class BetterModelPluginImpl : AbstractBetterModelPlugin() {
                         "Plugin is loaded. (${result.totalTime().withComma()} ms)".toComponent(GREEN),
                         "Minecraft version: ${props.version}, NMS version: ${props.nms.version()}".toComponent(AQUA),
                         "Platform: ${when {
+                            BetterModel.IS_BTC_CORE -> "BTC Core"
                             BetterModel.IS_FOLIA -> "Folia"
                             BetterModel.IS_PURPUR -> "Purpur"
                             BetterModel.IS_PAPER -> "Paper"
