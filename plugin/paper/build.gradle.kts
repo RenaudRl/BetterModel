@@ -16,9 +16,9 @@ modrinth {
     loaders = PAPER_LOADERS
 }
 
-tasks.modrinth {
-    dependsOn(tasks.modrinthSyncBody)
-}
+//tasks.modrinth {
+//    dependsOn(tasks.modrinthSyncBody)
+//}
 
 val generatePaperLibrary by tasks.registering {
     outputs.file(libraryDir)
