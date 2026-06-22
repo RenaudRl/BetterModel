@@ -96,6 +96,7 @@ abstract class BetterModelPlugin : AbstractBetterModelPlugin() {
                         "Minecraft version: ${props.version}, NMS version: ${props.nms.version()}".toComponent(AQUA),
                         "Platform: ${
                             when {
+                                IS_BTC_CORE -> "BTC Core"
                                 IS_FOLIA -> "Folia"
                                 IS_PURPUR -> "Purpur"
                                 IS_PAPER -> "Paper"
