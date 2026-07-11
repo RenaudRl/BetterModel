@@ -40,7 +40,7 @@ public interface BetterModelBukkit extends BetterModelPlatform {
      * Checks if the server is running on the BTC Core platform.
      * @since 2.0.0
      */
-    boolean IS_BTC_CORE = classExists("com.infernalsuite.asp.config.BTCCoreConfig");
+    boolean IS_BTC_CORE = classExists("com.infernalsuite.asp.api.BTCCoreAPI");
     /**
      * Checks if the server is running on the Paper platform (or a fork like Purpur/Folia/BTC Core).
      * @since 2.0.0
