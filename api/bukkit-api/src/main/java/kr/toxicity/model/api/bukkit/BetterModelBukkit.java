@@ -46,10 +46,15 @@ public interface BetterModelBukkit extends BetterModelPlatform {
      */
     boolean IS_PURPUR = classExists("org.purpurmc.purpur.PurpurConfig");
     /**
-     * Checks if the server is running on the Paper platform (or a fork like Purpur/Folia).
+     * Checks if the server is running on the BTC Core platform.
      * @since 2.0.0
      */
-    boolean IS_PAPER = IS_PURPUR || IS_FOLIA || classExists("io.papermc.paper.configuration.PaperConfigurations");
+    boolean IS_BTC_CORE = classExists("com.infernalsuite.asp.api.BTCCoreAPI");
+    /**
+     * Checks if the server is running on the Paper platform (or a fork like Purpur/Folia/BTC Core).
+     * @since 2.0.0
+     */
+    boolean IS_PAPER = IS_PURPUR || IS_FOLIA || IS_BTC_CORE || classExists("io.papermc.paper.configuration.PaperConfigurations");
 
     /**
      * Returns the current {@link BetterModelBukkit} instance.
