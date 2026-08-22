@@ -35,4 +35,25 @@ public final class ReflectionUtil {
             return false;
         }
     }
+
+    /**
+     * Checks some method is existing.
+     * <p>
+     * Use this instead of {@link #classExists(String)} when the point is to know whether an API can
+     * actually be called: a fork may ship a class of another platform as a stub without any of the
+     * API surface that goes with it.
+     *
+     * @param clazz class path
+     * @param method method name
+     * @param parameters method parameter types
+     * @return exists
+     */
+    public static boolean methodExists(@NotNull String clazz, @NotNull String method, @NotNull Class<?>... parameters) {
+        try {
+            Class.forName(clazz).getMethod(method, parameters);
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            return false;
+        }
+    }
 }
