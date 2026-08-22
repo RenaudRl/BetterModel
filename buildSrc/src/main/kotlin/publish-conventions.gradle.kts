@@ -39,9 +39,13 @@ dependencies {
     testAnnotationProcessor(libs.lombok)
 }
 
+// Local BTC publishing (-PbtcLocalPublish): artifacts go to the BTC repo unsigned.
+// Maven Central publishing is untouched and stays signed.
+val btcLocalPublish = providers.gradleProperty("btcLocalPublish").isPresent
+
 mavenPublishing {
     publishToMavenCentral()
-    signAllPublications()
+    if (!btcLocalPublish) signAllPublications()
     coordinates("io.github.toxicity188", artifactBaseId, artifactVersion)
     configure(JavaLibrary(
         javadocJar = JavadocJar.Javadoc(),
@@ -82,6 +86,17 @@ publishing {
                 username = "toxicity188"
                 password = System.getenv("PACKAGES_API_TOKEN")
             }
+        }
+        // BTC Studio unified static Maven repo: committed under BTCVelocity/repo and
+        // uploaded as-is to https://borntocraftstudio.net/public/repo/ . Overridable via
+        // -PbtcRepoDir so this fork still builds when BTCVelocity is not checked out
+        // next to it.
+        maven {
+            name = "btcRepo"
+            url = uri(
+                providers.gradleProperty("btcRepoDir")
+                    .getOrElse(rootProject.file("../BTCVelocity/repo").absolutePath)
+            )
         }
     }
 }
