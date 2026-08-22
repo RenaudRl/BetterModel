@@ -97,6 +97,9 @@ abstract class BetterModelPlugin : AbstractBetterModelPlugin() {
                         "Minecraft version: ${props.version}, NMS version: ${props.nms.version()}".toComponent(AQUA),
                         "Platform: ${
                             when {
+                                // Before IS_FOLIA: BTC Core is regionised, so it answers true to
+                                // both and would otherwise report itself as plain Folia.
+                                IS_BTC_CORE -> "BTC Core"
                                 IS_FOLIA -> "Folia"
                                 IS_PURPUR -> "Purpur"
                                 IS_PAPER -> "Paper"
