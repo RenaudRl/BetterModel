@@ -14,6 +14,7 @@ import kr.toxicity.model.api.bukkit.scheduler.BukkitModelScheduler;
 import org.jetbrains.annotations.NotNull;
 
 import static kr.toxicity.model.api.util.ReflectionUtil.classExists;
+import static kr.toxicity.model.api.util.ReflectionUtil.methodExists;
 
 /**
  * Represents the Bukkit-specific platform interface for BetterModel.
@@ -42,9 +43,17 @@ public interface BetterModelBukkit extends BetterModelPlatform {
     boolean IS_FOLIA = classExists("io.papermc.paper.threadedregions.RegionizedServer");
     /**
      * Checks if the server is running on the Purpur platform.
+     * <p>
+     * The presence of {@code PurpurConfig} alone is not enough: BTC Core ships a stub of that class
+     * in Purpur's own package so its ported Purpur feature patches keep compiling, while providing
+     * none of {@code purpur-api}. Detecting on the class alone made BTC Core report itself as Purpur
+     * and start {@code PurpurHook}, whose view filters call {@code Player#isAfk()} — a method that
+     * does not exist there, so every filtered viewer would hit a {@link NoSuchMethodError}. The
+     * second check is on the API this flag actually gates.
      * @since 2.0.0
      */
-    boolean IS_PURPUR = classExists("org.purpurmc.purpur.PurpurConfig");
+    boolean IS_PURPUR = classExists("org.purpurmc.purpur.PurpurConfig")
+        && methodExists("org.bukkit.entity.Player", "isAfk");
     /**
      * Checks if the server is running on the BTC Core platform.
      * @since 2.0.0
