@@ -62,12 +62,7 @@ include(published)
 include(
     "purpur",
 
-    //nms
-    "nms:v1_21_R3",
-    "nms:v1_21_R4",
-    "nms:v1_21_R5",
-    "nms:v1_21_R6",
-    "nms:v1_21_R7",
+    //nms — legacy v1_21_R3..R7 dropped: this fork targets 26.2 only.
     "nms:v26_R1",
     "nms:v26_R2",
 

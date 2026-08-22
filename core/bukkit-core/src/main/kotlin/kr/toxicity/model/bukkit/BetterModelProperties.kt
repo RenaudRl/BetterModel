@@ -44,11 +44,7 @@ internal class BetterModelProperties(
     val nms = when (version) {
         V26_2 -> Latest()
         V26_1, V26_1_1, V26_1_2 -> kr.toxicity.model.bukkit.nms.v26_R1.NMSImpl()
-        V1_21_11 -> kr.toxicity.model.bukkit.nms.v1_21_R7.NMSImpl()
-        V1_21_9, V1_21_10 -> kr.toxicity.model.bukkit.nms.v1_21_R6.NMSImpl()
-        V1_21_6, V1_21_7, V1_21_8 -> kr.toxicity.model.bukkit.nms.v1_21_R5.NMSImpl()
-        V1_21_5 -> kr.toxicity.model.bukkit.nms.v1_21_R4.NMSImpl()
-        V1_21_4 -> kr.toxicity.model.bukkit.nms.v1_21_R3.NMSImpl()
+        // Legacy NMS (v1_21_R3..R7) dropped: this fork targets 26.2 only.
         else -> {
             warn(
                 "Note: this version is officially untested.".toComponent(),
