@@ -130,23 +130,13 @@ public sealed interface BlueprintElement {
             return origin.invertXZ();
         }
 
-        private @NotNull String jsonName(@NotNull BlueprintLoadContext context) {
-            return PackUtil.toPackName(context.name() + "_" + name.rawName());
-        }
-
         /**
-         * Builds the JSON representation for legacy clients (1.21.3 or under).
-         *
-         * @param obfuscator the obfuscator for model and texture names
-         * @param context the load context
-         * @return the generated blueprint JSON, or null if not applicable
-         * @since 1.15.2
+         * Gets JSON name of this element
+         * @param context context
+         * @return the JSON name
          */
-        public @Nullable BlueprintJson buildLegacyJson(
-            @NotNull PackObfuscator.Pair obfuscator,
-            @NotNull BlueprintLoadContext context
-        ) {
-            return buildJson(-2, 1, scale(), obfuscator, context, Float3.ZERO, filterIsInstance(children, Cube.class).filter(element -> MathUtil.checkValidDegree(element.identifierDegree())));
+        public @NotNull String jsonName(@NotNull BlueprintLoadContext context) {
+            return PackUtil.toPackName(context.name() + "_" + name.rawName());
         }
 
         /**
@@ -169,7 +159,7 @@ public sealed interface BlueprintElement {
                     filterIsInstance(children, Cube.class),
                     Cube::identifierDegree
                 ),
-                (i, entry) -> buildJson(0, i + 1, scale, obfuscator, context, entry.getKey(), entry.getValue().stream())
+                (i, entry) -> buildJson(i + 1, scale, obfuscator, context, entry.getKey(), entry.getValue().stream())
             ).filter(Objects::nonNull)
                 .toList();
             return list.isEmpty() ? null : list;
@@ -196,7 +186,6 @@ public sealed interface BlueprintElement {
         }
 
         private @Nullable BlueprintJson buildJson(
-            int tint,
             int number,
             float scale,
             @NotNull PackObfuscator.Pair obfuscator,
@@ -218,7 +207,7 @@ public sealed interface BlueprintElement {
                 .jsonObject("textures", textures -> textures
                     .stringProperties(selectedTextures)
                     .property("particle", selectedTextures.getFirst().getValue()))
-                .jsonArray("elements", mapToJson(cubeElement, cube -> cube.buildJson(tint, scale, context, this, identifier)))
+                .jsonArray("elements", mapToJson(cubeElement, cube -> cube.buildJson(scale, context, this, identifier)))
                 .jsonObject("display", display -> display.jsonObject("fixed", fixed -> {
                     if (!identifier.equals(Float3.ZERO)) {
                         fixed.jsonArray("rotation", identifier.convertToMinecraftDegree().toJson());
@@ -375,7 +364,6 @@ public sealed interface BlueprintElement {
         }
 
         private @NotNull JsonObject buildJson(
-            int tint,
             float scale,
             @NotNull BlueprintLoadContext parent,
             @NotNull BlueprintElement.Group group,
@@ -397,7 +385,7 @@ public sealed interface BlueprintElement {
                     .plus(Float3.CENTER)
                     .plus(inflate)
                     .toJson())
-                .jsonObject("faces", faces().toJson(parent, tint))
+                .jsonObject("faces", faces().toJson(parent))
                 .jsonObject("rotation", Optional.of(rotation().minus(identifier))
                     .filter(r -> !Float3.ZERO.equals(r))
                     .map(rot -> {

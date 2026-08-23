@@ -3,7 +3,7 @@ import io.papermc.hangarpublishplugin.model.Platforms
 plugins {
     alias(libs.plugins.convention.standard)
     alias(libs.plugins.hangar)
-    id("xyz.jpenilla.run-paper") version "3.0.2"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
 }
 
 val minecraft = property("minecraft_version").toString()
@@ -39,9 +39,9 @@ tasks {
         pluginJars(bettermodel, bettermodelTest)
         minecraftVersion(minecraft)
         downloadPlugins {
-            hangar("ViaVersion", "5.10.0")
-            hangar("ViaBackwards", "5.10.0")
-            hangar("Skript", "2.15.4")
+            hangar("ViaVersion", "5.11.0")
+            hangar("ViaBackwards", "5.11.0")
+            hangar("Skript", "2.16.1")
         }
     }
     build {
