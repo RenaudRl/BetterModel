@@ -67,11 +67,11 @@ BetterModel supports **player model with using user's custom skin without textur
 
 ## 🏗️ Supported environment
 
-[![](https://img.shields.io/badge/minecraft-1.21.4%7E26.2.x-8FCA5C?style=for-the-badge)](https://www.minecraft.net/en-us/download/server)
+[![](https://img.shields.io/badge/minecraft-1.21.4%7E26.3.x-8FCA5C?style=for-the-badge)](https://www.minecraft.net/en-us/download/server)
 [![](https://img.shields.io/badge/java-25%7E-ED8B00?style=for-the-badge)](https://adoptium.net/)
 
 ### Bukkit
-[![](https://img.shields.io/badge/folia-supported-blue?style=for-the-badge)](https://papermc.io/downloads/folia)
+[![](https://img.shields.io/badge/folia-✔-blue?style=for-the-badge)](https://papermc.io/downloads/folia)
 
 [![](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/paper_vector.svg)](https://papermc.io/downloads/paper)
 [![](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/purpur_vector.svg)](https://purpurmc.org/download/purpur)

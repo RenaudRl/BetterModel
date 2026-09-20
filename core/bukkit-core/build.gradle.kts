@@ -20,10 +20,10 @@ dependencies {
 
     compileOnly(libs.bundles.manifestLibrary)
 
-    compileOnly("net.citizensnpcs:citizens-main:2.0.43-SNAPSHOT") {
+    compileOnly("net.citizensnpcs:citizens-main:2.0.44-SNAPSHOT") {
         exclude("net.byteflux")
     }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.12.5")
     compileOnly("io.lumine:Mythic-Dist:5.13.0")
-    compileOnly("com.nexomc:nexo:1.26.0")
+    compileOnly("com.nexomc:nexo:1.28.0")
 }

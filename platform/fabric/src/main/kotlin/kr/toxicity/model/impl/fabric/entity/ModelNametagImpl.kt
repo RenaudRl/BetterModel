@@ -31,7 +31,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket
 import net.minecraft.world.entity.Display
 import net.minecraft.world.entity.EntityTypes
-import net.minecraft.world.entity.PositionMoveRotation
+import net.minecraft.world.entity.PositionPath
 import net.minecraft.world.phys.Vec3
 import org.joml.Vector3f
 import java.util.*
@@ -93,7 +93,7 @@ class ModelNametagImpl(
                 }
             )
             inPoint -> bundlerOfNotNull(
-                ClientboundEntityPositionSyncPacket(display.id, PositionMoveRotation.of(display), false),
+                ClientboundEntityPositionSyncPacket(display.id, PositionPath.of(display.position()), display.yRot, display.xRot, false),
                 display.entityData.packDirty()?.let {
                     ClientboundSetEntityDataPacket(display.id, it)
                 }

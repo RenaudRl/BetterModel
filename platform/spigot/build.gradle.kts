@@ -12,6 +12,7 @@ val dependenciesContent: List<String> = libs.bundles.library.map {
 dependencies {
     shade(project(":nms:v26_R1")) { isTransitive = false }
     shade(project(":nms:v26_R2")) { isTransitive = false }
+    shade(project(":nms:v26_R3")) { isTransitive = false }
 }
 
 modrinth {

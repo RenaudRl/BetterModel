@@ -32,7 +32,7 @@ import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.semver4j.Semver
 
-private typealias Latest = kr.toxicity.model.bukkit.nms.v26_R2.NMSImpl
+private typealias Latest = kr.toxicity.model.bukkit.nms.v26_R3.NMSImpl
 
 internal class BetterModelProperties(
     private val plugin: AbstractBetterModelPlugin
@@ -42,7 +42,8 @@ internal class BetterModelProperties(
 
     val version = parse(Bukkit.getBukkitVersion().substringBefore('-'))
     val nms = when (version) {
-        V26_2 -> Latest()
+        V26_3 -> Latest()
+        V26_2 -> kr.toxicity.model.bukkit.nms.v26_R2.NMSImpl()
         V26_1, V26_1_1, V26_1_2 -> kr.toxicity.model.bukkit.nms.v26_R1.NMSImpl()
         // Legacy NMS (v1_21_R3..R7) dropped: this fork targets 26.2 only.
         else -> {

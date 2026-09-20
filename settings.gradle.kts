@@ -18,7 +18,7 @@ buildscript {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     id("net.fabricmc.fabric-loom-repositories") version "1.17-SNAPSHOT"
-    id("net.neoforged.moddev.repositories") version "2.0.143"
+    id("net.neoforged.moddev.repositories") version "2.0.147"
 }
 
 dependencyResolutionManagement {
@@ -62,9 +62,10 @@ include(published)
 include(
     "purpur",
 
-    //nms — legacy v1_21_R3..R7 dropped: this fork targets 26.2 only.
-    "nms:v26_R1",
-    "nms:v26_R2",
+    //nms — legacy v1_21_R3..R7 dropped: this fork targets 26.x only.
+    "nms:v26_R1", //26.1
+    "nms:v26_R2", //26.2
+    "nms:v26_R3", //26.3
 
     //test
     "test-plugin"

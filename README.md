@@ -13,4 +13,4 @@ Fork de **[BetterModel](https://github.com/toxicity188/BetterModel)** (toxicity1
 ```
 
 ---
-Base upstream : `toxicity188/BetterModel` (branche v3) · cible Minecraft **26.2**
+Base upstream : `toxicity188/BetterModel` (branche v3) · cible Minecraft **26.3**
