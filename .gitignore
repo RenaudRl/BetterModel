@@ -41,3 +41,7 @@ bin/
 ### Minecraft ###
 run/
 plugins/
+
+### Agent context (BTC-local, not upstream) ###
+/CLAUDE.md
+/AGENTS.md

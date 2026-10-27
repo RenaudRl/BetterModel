@@ -7,6 +7,7 @@
 
 package kr.toxicity.model.api.tracker;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import kr.toxicity.model.api.animation.AnimationModifier;
 import kr.toxicity.model.api.animation.AnimationStateHandler;
 import kr.toxicity.model.api.bone.BoneMovement;
@@ -117,7 +118,7 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
     private Supplier<ModelRotation> rotationSupplier = () -> ModelRotation.EMPTY;
     private BiConsumer<Tracker, CloseReason> closeEventHandler = (t, r) -> EventUtil.call(CloseTrackerEvent.class, () -> new CloseTrackerEvent(t, r));
 
-    private ScheduledPacketHandler handler = (_, _) -> animationTick();
+    private volatile List<ScheduledPacketHandler> tickHandlers = new ObjectArrayList<>();
     private BiConsumer<Tracker, PlatformPlayer> perPlayerHandler = null;
 
     /**
@@ -141,7 +142,7 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
         ));
         tick((t, _) -> {
             var perPlayer = perPlayerHandler;
-            if (perPlayer != null) pipeline.nonHidePlayer().forEach(p -> perPlayer.accept(t, p.player()));
+            if (perPlayer != null) pipeline.forEachNonHidePlayer(p -> perPlayer.accept(t, p.player()));
         });
         pipeline.spawnPacketHandler(_ -> start());
         pipeline.eventDispatcher().handleStateCreate((_, uuid) -> bundlerSet.perPlayerViewBundler
@@ -200,23 +201,25 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
     }
 
     private void tick() {
-        try {
-            if (frame % MINECRAFT_TICK_MULTIPLIER == 0) {
-                Runnable task;
-                while ((task = queuedTask.poll()) != null) task.run();
-            }
-            handler.handle(this, bundlerSet);
-            bundlerSet.send();
-        } catch (Throwable throwable) {
-            LogUtil.handleException("Ticking this tracker has been failed: " + name(), throwable);
+        if (frame % MINECRAFT_TICK_MULTIPLIER == 0) {
+            Runnable task;
+            while ((task = queuedTask.poll()) != null) task.run();
         }
+        animationTick();
+        tickHandlers.forEach(handler -> {
+            try {
+                handler.handle(this, bundlerSet);
+            } catch (Throwable throwable) {
+                LogUtil.handleException("Ticking this tracker has been failed: " + name(), throwable);
+            }
+        });
+        bundlerSet.send();
     }
 
     private void animationTick() {
-        if (!tickPause.get()) {
-            scriptProcessor.tick();
-            pipeline.tick(bundlerSet.viewBundler);
-        }
+        if (tickPause.get()) return; // Pause
+        scriptProcessor.tick();
+        pipeline.tick(bundlerSet.viewBundler);
     }
 
     /**
@@ -286,7 +289,16 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
      * @since 1.15.2
      */
     public synchronized void frame(@NotNull ScheduledPacketHandler handler) {
-        this.handler = this.handler.then(Objects.requireNonNull(handler));
+        Objects.requireNonNull(handler);
+        var get = tickHandlers;
+        if (!isScheduled()) {
+            get.add(handler);
+        } else {
+            var newList = new ObjectArrayList<ScheduledPacketHandler>(get.size() + 1);
+            newList.addAll(get);
+            newList.add(handler);
+            tickHandlers = newList;
+        }
     }
     /**
      * Registers a handler to run every Minecraft tick (50ms).
@@ -956,20 +968,6 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
          * @since 1.15.2
          */
         void handle(@NotNull Tracker tracker, @NotNull BundlerSet bundlerSet);
-
-        /**
-         * Chains this handler with another.
-         *
-         * @param other the other handler
-         * @return the combined handler
-         * @since 1.15.2
-         */
-        default @NotNull ScheduledPacketHandler then(@NotNull ScheduledPacketHandler other) {
-            return (t, s) -> {
-                handle(t, s);
-                other.handle(t, s);
-            };
-        }
     }
 
     /**
@@ -1005,15 +1003,17 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
 
         private void globalSend() {
             if (tickBundler.isNotEmpty()) {
-                pipeline.allPlayer().map(PlayerChannelHandler::player).forEach(tickBundler::send);
+                pipeline.forEachAllPlayer(tickBundler::send);
                 tickBundler = pipeline.createBundler();
             }
             if (dataBundler.isNotEmpty()) {
-                pipeline.nonHidePlayer().map(PlayerChannelHandler::player).forEach(dataBundler::send);
+                pipeline.forEachNonHidePlayer(dataBundler::send);
                 dataBundler = pipeline.createBundler();
             }
             if (viewBundler.isNotEmpty()) {
-                pipeline.viewedPlayer().filter(p -> !perPlayerViewBundler.containsKey(p.uuid())).forEach(viewBundler::send);
+                pipeline.forEachViewedPlayer(p -> {
+                    if (!perPlayerViewBundler.containsKey(p.uuid())) viewBundler.send(p);
+                });
                 viewBundler = pipeline.createAnimationBundler();
             }
         }
@@ -1038,18 +1038,18 @@ public sealed abstract class Tracker implements AutoCloseable permits EntityTrac
         public void remove() {
             if (counter.decrementAndGet() == 0) {
                 bundlerSet.perPlayerViewBundler.remove(uuid);
-                channel().ifPresent(handler -> {
+                channel().ifPresent(channel -> {
                     var bundler = pipeline.createBundler();
                     pipeline.forEach(bone -> bone.forceTransformation(bundler));
-                    bundler.send(handler.player());
-                    EventUtil.call(PlayerPerAnimationEndEvent.class, () -> new PlayerPerAnimationEndEvent(Tracker.this, handler.player()));
+                    bundler.send(channel);
+                    EventUtil.call(PlayerPerAnimationEndEvent.class, () -> new PlayerPerAnimationEndEvent(Tracker.this, channel.player()));
                 });
             }
         }
 
         private void send() {
             if (pipeline.tick(uuid, bundler) && bundler.isNotEmpty()) {
-                channel().ifPresent(handler -> bundler.send(handler));
+                channel().ifPresent(bundler::send);
                 bundler = pipeline.createAnimationBundler();
             }
         }

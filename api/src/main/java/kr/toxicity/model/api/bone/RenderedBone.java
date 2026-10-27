@@ -147,9 +147,9 @@ public final class RenderedBone implements BoneEventHandler {
 
     public void locator(@NotNull BoneIKSolver solver) {
         if (getGroup().getParent() instanceof BlueprintElement.NullObject nullObject) {
-            var ikTarget = nullObject.ikTarget();
-            if (ikTarget == null) return;
-            solver.addLocator(nullObject.ikSource(), ikTarget, this);
+            var ikChainConfig = nullObject.config();
+            if (ikChainConfig == null) return;
+            solver.addLocator(ikChainConfig, this);
         }
     }
 
@@ -484,6 +484,29 @@ public final class RenderedBone implements BoneEventHandler {
     public void remove(@NotNull PacketBundler bundler) {
         if (display != null) display.remove(bundler);
         if (nametag != null) nametag.remove(bundler);
+    }
+
+    /**
+     * Tests whether the parent element is derived from (an instance of) the specified class type.
+     *
+     * <pre>{@code
+     * // Instead of:
+     * boolean isDerived = getGroup().getParent() instanceof BlueprintElement.class;
+     *
+     * // You can write:
+     * boolean isDerived = isDerivedFrom(BlueprintElement.class);
+     * }</pre>
+     *
+     * @param elementClass the expected class type
+     * @return {@code true} if the parent is an instance of {@code elementClass}; {@code false} otherwise
+     * @since 3.6.0
+     */
+    public boolean isDerivedFrom(@NotNull Class<? extends BlueprintElement> elementClass) {
+        return elementClass.isInstance(getGroup().getParent());
+    }
+
+    public @NotNull Vector3f rootPosition() {
+        return root.group.getPosition();
     }
 
     public @NotNull Stream<RenderedBone> flatten() {
